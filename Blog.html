@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Fresh Pages — Blog</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+
+        <header class="site-header">
+            <div class="container header-row">
+                <a class="brand" href="index.html">
+                    <img src="fresh-pages-mark.svg" alt="" class="brand-logo">
+                    <span class="brand-title">Fresh Pages</span>
+                </a>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="About.html">About</a>
+                    <a href="Blog.html">Blog</a>
+                    <a href="Create.html">Create</a>
+                </nav>
+                <div class="header-actions">
+                    <button id="themeToggle" class="theme-toggle">Toggle</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+                <main class="container">
+                    <div class="blog-top-row">
+                        <div class="section-header-row">
+                            <img src="fresh-pages-mark.svg" class="mini-section-logo" alt="">
+                            <h2 class="section-title">Community Stories</h2>
+                        </div>
+                        <div class="search-bar">
+                            <input id="blogSearch" placeholder="Search stories, authors, tags..." aria-label="Search stories">
+                            <button id="clearSearch" aria-label="Clear search">Clear</button>
+                        </div>
+                    </div>
+
+                    <div class="featured-hero" id="featuredHero">
+                        <div class="hero-body">
+                            <h3>Featured stories</h3>
+                            <p>No featured stories yet. New content will appear here soon.</p>
+                        </div>
+                    </div>
+
+                        <section class="blog-section">
+                        <div class="blog-grid" id="blogGrid">
+                            <p class="loading-msg">Loading stories...</p>
+                        </div>
+                        <div style="text-align:center;margin-top:18px;">
+                            <button id="loadMoreBtn" class="btn outline">Load more</button>
+                        </div>
+                    </section>
+
+            <hr class="divider">
+
+            <section class="blog-section">
+                <h2 class="section-title">Featured Stories</h2>
+                <div class="blog-grid" id="featuredGrid">
+                    <p class="loading-msg">No featured stories yet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+        <footer class="site-footer">
+            <div class="container footer-grid">
+                <div>
+                    <img src="fresh-pages-logo.svg" alt="Fresh Pages" class="footer-logo">
+                    <p>Sharing fresh perspectives, one page at a time.</p>
+                </div>
+                <div>
+                    <h4>Help</h4>
+                    <p>Questions? Email <a href="mailto:freshpagessupport@gmail.com">freshpagessupport@gmail.com</a></p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <nav class="footer-nav">
+                        <a href="About.html">About</a>
+                        <a href="Blog.html">Blog</a>
+                        <a href="Create.html">Create</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">&copy; 2026 Fresh Pages — All rights reserved.</div>
+            </div>
+        </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="theme-engine.js"></script>
+    <script src="script.js"></script>
+    <script src="Blog.js"></script>
+</body>
+</html>

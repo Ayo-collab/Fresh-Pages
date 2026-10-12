@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Fresh Pages — Settings</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container header-row">
+                <a class="brand" href="index.html">
+                    <img src="fresh-pages-mark.svg" alt="" class="brand-logo">
+                    <span class="brand-title">Fresh Pages</span>
+                </a>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="About.html">About</a>
+                    <a href="Blog.html">Blog</a>
+                    <a href="Create.html">Create</a>
+                </nav>
+                <div class="header-actions">
+                    <button id="themeToggle" class="theme-toggle">Toggle</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container settings-page">
+                <div class="settings-header-row">
+                    <div>
+                        <p class="eyebrow">Account</p>
+                        <h2 class="section-title">Your Settings</h2>
+                    </div>
+                </div>
+
+                <div class="settings-grid">
+                    <section class="settings-card">
+                        <div class="card-header-row">
+                            <h3>Profile</h3>
+                            <span class="status-pill">Active</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="displayNameInput">Creator Name</label>
+                            <input type="text" id="displayNameInput" placeholder="Loading name...">
+                        </div>
+                        <button class="read-more-btn" id="saveProfileBtn">Update Name</button>
+                    </section>
+
+                    <section class="settings-card settings-card-wide">
+                        <div class="card-header-row">
+                            <h3>Your Drafts</h3>
+                            <span class="status-pill muted">Saved</span>
+                        </div>
+                        <div id="draftsList" class="scroll-list">
+                            <p class="modal-hint">Checking for drafts...</p>
+                        </div>
+                    </section>
+
+                    <section class="settings-card settings-card-wide">
+                        <div class="card-header-row">
+                            <h3>Manage My Stories</h3>
+                            <span class="status-pill">Published</span>
+                        </div>
+                        <div id="userPostsList" class="manage-stories-grid">
+                            <p class="modal-hint">Loading your stories...</p>
+                        </div>
+                    </section>
+
+                    <section class="settings-card">
+                        <div class="card-header-row">
+                            <h3>Appearance</h3>
+                            <span class="status-pill muted">Theme</span>
+                        </div>
+                        <button id="settingsThemeToggle" class="read-more-btn outline-btn theme-toggle">
+                            Toggle Light Mode
+                        </button>
+                        <div class="form-group">
+                            <label for="fontSizeSelect">Font Size</label>
+                            <select id="fontSizeSelect">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                            </select>
+                            <p class="settings-hint">Applies across the site and is saved on this device.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="fontFamilySelect">Font Style</label>
+                            <select id="fontFamilySelect">
+                                <option value="inter">Inter — Clean</option>
+                                <option value="arial">Arial — Simple</option>
+                                <option value="verdana">Verdana — Easy to read</option>
+                                <option value="trebuchet">Trebuchet — Rounded</option>
+                                <option value="georgia">Georgia — Classic serif</option>
+                                <option value="garamond">Garamond — Elegant serif</option>
+                                <option value="mono">Monospace — Typewriter</option>
+                            </select>
+                            <p class="settings-hint">Choose a typeface for the whole site. Your choice is saved on this device.</p>
+                        </div>
+                    </section>
+
+                    <section class="settings-card">
+                        <div class="card-header-row">
+                            <h3>Account</h3>
+                            <span class="status-pill danger">Secure</span>
+                        </div>
+                        <p class="settings-hint">Sign out of your session securely.</p>
+                        <button id="logoutButton" class="logout-btn">Log Out</button>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+    <!-- Firebase SDKs (no brackets) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Your Firebase config and initialization should be in a separate script before settings-post.js -->
+    <script src="settings-post.js"></script>
+    <script src="theme-engine.js"></script>
+</body>
+</html>

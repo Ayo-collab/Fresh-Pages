@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Fresh Pages — About</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href="index.html">
+          <img src="fresh-pages-mark.svg" alt="" class="brand-logo">
+          <span class="brand-title">Fresh Pages</span>
+        </a>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="About.html">About</a>
+          <a href="Blog.html">Blog</a>
+          <a href="Create.html">Create</a>
+        </nav>
+        <div class="header-actions">
+          <button id="themeToggle" class="theme-toggle">Toggle</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content container">
+      <section class="about-hero">
+        <div class="hero-inner">
+          <h1>We build places where stories find readers.</h1>
+          <p class="lead">Fresh Pages is a friendly, inclusive platform for writers and readers. We provide tools for drafting, publishing, and discovering original stories across genres.</p>
+          <div class="hero-ctas">
+            <a href="Create.html" class="btn primary">Start Writing</a>
+            <a href="Blog.html" class="btn outline">Browse Stories</a>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>What we offer</h2>
+        <div class="about-features">
+          <div class="card">
+            <h3>Drafts & Autosave</h3>
+            <p>Write comfortably—your work is saved automatically so you never lose progress.</p>
+          </div>
+          <div class="card">
+            <h3>Community Feedback</h3>
+            <p>Readers can like, dislike, and comment on stories shared with the community.</p>
+          </div>
+          <div class="card">
+            <h3>Choose How to Share</h3>
+            <p>Publish stories for everyone or make them available to signed-in members.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <div class="how-it-works">
+          <div class="how-step">
+            <strong>1. Write</strong>
+            <p>Create a draft using our editor with autosave and formatting tools.</p>
+          </div>
+          <div class="how-step">
+            <strong>2. Share</strong>
+            <p>Choose whether a story is open to everyone or to signed-in members.</p>
+          </div>
+          <div class="how-step">
+            <strong>3. Grow</strong>
+            <p>Readers can react to stories and join the conversation with comments.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>What you can do</h2>
+        <div class="stats-grid">
+          <div class="stat">
+            <div class="num">Write</div>
+            <div class="label">Create and save drafts</div>
+          </div>
+          <div class="stat">
+            <div class="num">Share</div>
+            <div class="label">Publish stories your way</div>
+          </div>
+          <div class="stat">
+            <div class="num">Connect</div>
+            <div class="label">React and comment</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="creator-section">
+        <h2>Meet the creator</h2>
+        <p class="creator-intro">Fresh Pages was created by one person with a love for stories.</p>
+        <div class="team-grid">
+          <div class="team-member creator-card">
+            <div class="creator-avatar" aria-hidden="true">AO</div>
+            <strong>Ayomi Oyetade</strong>
+            <div class="muted">Founder & Creator</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img src="fresh-pages-logo.svg" alt="Fresh Pages" class="footer-logo">
+          <p>Sharing fresh perspectives, one page at a time.</p>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <p>Questions? Email <a href="mailto:freshpagessupport@gmail.com">freshpagessupport@gmail.com</a></p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <nav class="footer-nav">
+            <a href="About.html">About</a>
+            <a href="Blog.html">Blog</a>
+            <a href="Create.html">Create</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">&copy; 2026 Fresh Pages — All rights reserved.</div>
+      </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script src="theme-engine.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

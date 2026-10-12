@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Story — Fresh Pages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-row">
+            <a class="brand" href="index.html">
+                <img src="fresh-pages-mark.svg" alt="" class="brand-logo">
+                <span class="brand-title">Fresh Pages</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="About.html">About</a>
+                <a href="Blog.html">Blog</a>
+                <a href="Create.html">Create</a>
+            </nav>
+            <div class="header-actions">
+                <button id="themeToggle" class="theme-toggle" type="button">Toggle</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container story-page">
+        <a class="story-back" href="Blog.html"><span aria-hidden="true">←</span> Back to Community Stories</a>
+        <p id="storyMessage" class="story-message" role="status">Loading story…</p>
+        <article id="storyContent" class="story-panel" style="display:none">
+            <div class="story-kicker"><span class="story-kicker-mark" aria-hidden="true">✦</span> A Fresh Pages story</div>
+            <h1 id="storyTitle" class="story-title"></h1>
+            <p id="storyMeta" class="story-meta"></p>
+            <div id="storyBody"></div>
+            <div class="story-actions" aria-label="Story reactions">
+                <button id="likeBtn" type="button">👍 <span id="likeCount">0</span></button>
+                <button id="dislikeBtn" type="button">👎 <span id="dislikeCount">0</span></button>
+            </div>
+            <section class="comments-section" aria-labelledby="commentsHeading">
+                <h2 id="commentsHeading">Comments</h2>
+                <form id="commentForm" class="comment-form">
+                    <input id="commentInput" type="text" placeholder="Write a comment…" maxlength="1000" aria-label="Write a comment">
+                    <button id="postCommentBtn" type="submit">Post comment</button>
+                </form>
+                <div id="commentsDisplay" aria-live="polite"></div>
+            </section>
+        </article>
+        <section id="lockOverlay" class="story-lock">
+            <h1>Members-only story</h1>
+            <p>Log in to read this story.</p>
+            <a href="login.html">Log in</a> · <a href="signup.html">Create an account</a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-bottom">&copy; 2026 Fresh Pages — All rights reserved.</div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="theme-engine.js"></script>
+    <script src="script.js"></script>
+    <script src="Story.js"></script>
+</body>
+</html>

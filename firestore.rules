@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsUserPath(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function isLivePost(post) {
+      return post.status == 'published' || post.status == 'pending';
+    }
+
+    function canReadPostComments(userId, postId) {
+      let post = get(/databases/$(database)/documents/Users/$(userId)/posts/$(postId)).data;
+      return isLivePost(post);
+    }
+
+    function isValidReactionUpdate() {
+      let changed = request.resource.data.diff(resource.data).affectedKeys();
+      return signedIn()
+        && isLivePost(resource.data)
+        && changed.hasOnly(['likes', 'dislikes'])
+        && ((changed.hasOnly(['likes'])
+              && request.resource.data.likes == resource.data.get('likes', 0) + 1)
+          || (changed.hasOnly(['dislikes'])
+              && request.resource.data.dislikes == resource.data.get('dislikes', 0) + 1));
+    }
+
+    match /Users/{userId} {
+      allow read, write: if ownsUserPath(userId);
+    }
+
+    match /Users/{userId}/drafts/{draftId} {
+      allow read, write: if ownsUserPath(userId);
+    }
+
+    match /Users/{userId}/posts/{postId} {
+      allow create: if ownsUserPath(userId)
+        && request.resource.data.uid == userId
+        && request.resource.data.status == 'published';
+      allow read: if ownsUserPath(userId) || isLivePost(resource.data);
+      allow update: if ownsUserPath(userId) || isValidReactionUpdate();
+      allow delete: if ownsUserPath(userId);
+
+      match /comments/{commentId} {
+        allow read: if canReadPostComments(userId, postId);
+        allow create: if signedIn()
+          && canReadPostComments(userId, postId)
+          && request.resource.data.keys().hasOnly(['text', 'author', 'uid', 'createdAt'])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.author is string
+          && request.resource.data.author.size() <= 100
+          && request.resource.data.createdAt == request.time;
+        allow update, delete: if false;
+      }
+    }
+
+    // Collection-group blog query is scoped to live posts; the Blog hides explicit private posts.
+    match /{path=**}/posts/{postId} {
+      allow read: if isLivePost(resource.data);
+    }
+
+    match /messages/{messageId} {
+      allow create: if signedIn();
+      allow read: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Fresh Pages — Home</title>
+    <meta name="description" content="Fresh Pages — a modern storytelling community">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-row">
+        <a class="brand" href="index.html">
+          <img src="fresh-pages-mark.svg" alt="" class="brand-logo">
+          <span class="brand-title">Fresh Pages</span>
+        </a>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="About.html">About</a>
+          <a href="Blog.html">Blog</a>
+          <a href="Create.html">Create</a>
+          <a href="settings.html" class="nav-auth-logged-in">Settings</a>
+          <a href="login.html" class="nav-auth-logged-out">Login</a>
+        </nav>
+        <div class="header-actions">
+          <button id="themeToggle" class="theme-toggle">Toggle</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="content container">
+      <section class="hero">
+        <div class="hero-inner">
+          <h1>Share your voice. Discover new stories.</h1>
+          <p class="lead">Fresh Pages is a friendly community for writers and readers. Publish articles, find collaborators, and join conversations.</p>
+          <div class="hero-ctas">
+            <a class="btn primary" href="Create.html">Write a Story</a>
+            <a class="btn outline" href="Blog.html">Explore</a>
+          </div>
+        </div>
+        <div class="hero-illustration" aria-hidden="true"></div>
+      </section>
+
+      <section class="features">
+        <h2>Featured</h2>
+        <div class="grid featured-grid">
+          <article class="card">
+            <h3>Community Spotlight</h3>
+            <p>Discover stories shared by Fresh Pages writers.</p>
+            <a class="read-more" href="Blog.html">Read more</a>
+          </article>
+          <article class="card">
+            <h3>Write with Confidence</h3>
+            <p>Drafts, autosave, and collaboration tools.</p>
+            <a class="read-more" href="Create.html">Get started</a>
+          </article>
+          <article class="card">
+            <h3>Secure Accounts</h3>
+            <p>Fast sign-in and account tools powered by Firebase.</p>
+            <a class="read-more" href="login.html">Sign in</a>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <img src="fresh-pages-logo.svg" alt="Fresh Pages" class="footer-logo">
+          <p>Sharing fresh perspectives, one page at a time.</p>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <p>Questions? Email <a href="mailto:freshpagessupport@gmail.com">freshpagessupport@gmail.com</a></p>
+        </div>
+        <div>
+          <h4>Quick Links</h4>
+          <nav class="footer-nav">
+            <a href="About.html">About</a>
+            <a href="Blog.html">Blog</a>
+            <a href="Create.html">Create</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container">&copy; 2026 Fresh Pages — All rights reserved.</div>
+      </div>
+    </footer>
+
+    <!-- Firebase (optional) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script src="theme-engine.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
