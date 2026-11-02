@@ -7,7 +7,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body class="blog-page">
 
         <header class="site-header">
             <div class="container header-row">
@@ -22,6 +22,7 @@
                     <a href="Create.html">Create</a>
                 </nav>
                 <div class="header-actions">
+                    <span id="headerUserName" class="header-user-name" hidden></span>
                     <button id="themeToggle" class="theme-toggle">Toggle</button>
                 </div>
             </div>
@@ -31,39 +32,42 @@
                 <main class="container">
                     <div class="blog-top-row">
                         <div class="section-header-row">
-                            <img src="fresh-pages-mark.svg" class="mini-section-logo" alt="">
-                            <h2 class="section-title">Community Stories</h2>
+                            <div>
+                                <p class="blog-kicker"><span aria-hidden="true">✦</span> THE COMMUNITY FEED</p>
+                                <h1 class="section-title">Stories with main-character energy</h1>
+                                <p class="blog-intro">Fresh ideas, different POVs, and stories worth staying up for.</p>
+                            </div>
                         </div>
                         <div class="search-bar">
-                            <input id="blogSearch" placeholder="Search stories, authors, tags..." aria-label="Search stories">
-                            <button id="clearSearch" aria-label="Clear search">Clear</button>
+                            <input id="blogSearch" type="search" placeholder="Find your next read..." aria-label="Search stories">
+                            <button id="clearSearch" type="button" aria-label="Clear search">Clear</button>
                         </div>
                     </div>
 
                     <div class="featured-hero" id="featuredHero">
                         <div class="hero-body">
+                            <p class="featured-kicker">✨ THE SPOTLIGHT</p>
                             <h3>Featured stories</h3>
                             <p>No featured stories yet. New content will appear here soon.</p>
                         </div>
                     </div>
 
                         <section class="blog-section">
+                        <div class="blog-section-heading">
+                            <div>
+                                <p class="blog-kicker">PICK A VIBE</p>
+                                <h2 class="section-title">The latest from your people</h2>
+                            </div>
+                            <a class="blog-create-link" href="Create.html">Got a story? <strong>Drop it here ↗</strong></a>
+                        </div>
                         <div class="blog-grid" id="blogGrid">
                             <p class="loading-msg">Loading stories...</p>
                         </div>
                         <div style="text-align:center;margin-top:18px;">
-                            <button id="loadMoreBtn" class="btn outline">Load more</button>
+                            <button id="loadMoreBtn" class="btn outline" type="button">More stories, please ↓</button>
                         </div>
                     </section>
 
-            <hr class="divider">
-
-            <section class="blog-section">
-                <h2 class="section-title">Featured Stories</h2>
-                <div class="blog-grid" id="featuredGrid">
-                    <p class="loading-msg">No featured stories yet.</p>
-                </div>
-            </section>
         </main>
     </div>
 

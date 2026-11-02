@@ -6,100 +6,181 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("🚀 Fresh Pages Script Loaded");
 
     // --- 1. FIREBASE SETUP ---
-    if (typeof firebase !== "undefined" && firebase.apps.length === 0) {
-        firebase.initializeApp({
-            apiKey: "AIzaSyBzOCqa-Ab7A6z-eaRpBKljCA-gb0Quzxg",
-            authDomain: "fresh-pages-f8d84.firebaseapp.com",
-            projectId: "fresh-pages-f8d84",
-            storageBucket: "fresh-pages-f8d84.firebasestorage.app",
-            messagingSenderId: "649436378724",
-            appId: "1:649436378724:web:b526af90fa94a7f605d171",
-            databaseURL: "https://fresh-pages-f8d84-default-rtdb.firebaseio.com"
-        });
-        console.log("🔥 Firebase Initialized");
+    try {
+        if (typeof firebase !== "undefined" && firebase.apps.length === 0) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyBzOCqa-Ab7A6z-eaRpBKljCA-gb0Quzxg",
+                authDomain: "fresh-pages-f8d84.firebaseapp.com",
+                projectId: "fresh-pages-f8d84",
+                storageBucket: "fresh-pages-f8d84.firebasestorage.app",
+                messagingSenderId: "649436378724",
+                appId: "1:649436378724:web:b526af90fa94a7f605d171",
+                databaseURL: "https://fresh-pages-f8d84-default-rtdb.firebaseio.com"
+            });
+            console.log("🔥 Firebase Initialized");
+        }
+    } catch (error) {
+        console.error("Firebase initialization failed:", error);
     }
 
-    const hasFirebase = typeof firebase !== "undefined" && firebase.apps;
+    const hasFirebase = typeof firebase !== "undefined"
+        && firebase.apps.length > 0
+        && typeof firebase.auth === "function"
+        && typeof firebase.firestore === "function";
     if (!hasFirebase) {
         console.warn("Firebase SDK is not loaded on this page.");
+        const unavailableMessage = "Sign-in is temporarily unavailable. Check your connection, then reload the page.";
+        [
+            { form: document.getElementById("signup-form"), message: document.getElementById("signupError") },
+            { form: document.getElementById("loginForm"), message: document.getElementById("loginError") }
+        ].forEach(({ form, message }) => {
+            if (!form) return;
+            form.addEventListener("submit", (event) => {
+                event.preventDefault();
+                if (message) {
+                    message.textContent = unavailableMessage;
+                    message.hidden = false;
+                    message.style.display = "block";
+                }
+            });
+        });
         return;
     }
 
     const auth = firebase.auth();
     const db = firebase.firestore();
+    const getAuthErrorMessage = (error, action) => {
+        const code = error && error.code;
+        const messages = {
+            "auth/invalid-email": "Enter a valid email address.",
+            "auth/email-already-in-use": "An account already uses this email. Try logging in instead.",
+            "auth/weak-password": "Choose a stronger password with at least 6 characters.",
+            "auth/user-not-found": "The email or password is incorrect. Check your details or create an account.",
+            "auth/wrong-password": "The email or password is incorrect. Check your details or reset your password.",
+            "auth/invalid-credential": "The email or password is incorrect. Check your details and try again.",
+            "auth/invalid-login-credentials": "The email or password is incorrect. Check your details and try again.",
+            "auth/user-disabled": "This account is currently disabled. Contact support for help.",
+            "auth/too-many-requests": "Too many attempts. Wait a little while, then try again.",
+            "auth/network-request-failed": "Couldn't connect. Check your internet connection and try again.",
+            "auth/operation-not-allowed": "Email and password accounts aren't enabled right now. Contact support."
+        };
+        return messages[code] || `We couldn't ${action}. Please try again.`;
+    };
+    const authLoadingScreen = document.createElement("div");
+    authLoadingScreen.className = "auth-loading-screen";
+    authLoadingScreen.setAttribute("role", "status");
+    authLoadingScreen.setAttribute("aria-live", "polite");
+    authLoadingScreen.setAttribute("aria-hidden", "true");
+    authLoadingScreen.innerHTML = `
+        <div class="auth-loading-card">
+            <div class="auth-loading-art" aria-hidden="true">
+                <span class="loading-sparkle loading-sparkle-one">✦</span>
+                <span class="loading-sparkle loading-sparkle-two">✳</span>
+                <span class="loading-book"><span></span><span></span></span>
+            </div>
+            <p class="auth-loading-kicker">FRESH PAGES</p>
+            <h2 class="auth-loading-title">Your next chapter is loading</h2>
+            <p class="auth-loading-message">Making a little room for your stories...</p>
+            <div class="auth-loading-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        </div>`;
+    document.body.appendChild(authLoadingScreen);
+
+    const showAuthLoading = (title, message) => {
+        authLoadingScreen.querySelector(".auth-loading-title").textContent = title;
+        authLoadingScreen.querySelector(".auth-loading-message").textContent = message;
+        authLoadingScreen.classList.add("is-visible");
+        authLoadingScreen.style.visibility = "visible";
+        authLoadingScreen.style.opacity = "1";
+        authLoadingScreen.style.pointerEvents = "auto";
+        authLoadingScreen.setAttribute("aria-hidden", "false");
+    };
+    const hideAuthLoading = () => {
+        authLoadingScreen.classList.remove("is-visible");
+        authLoadingScreen.style.visibility = "";
+        authLoadingScreen.style.opacity = "";
+        authLoadingScreen.style.pointerEvents = "";
+        authLoadingScreen.setAttribute("aria-hidden", "true");
+    };
+    const authTransitionDelay = () => new Promise(resolve => window.setTimeout(resolve, 650));
+
     // --- 2. SIGNUP WITH AGE VERIFICATION ---
     const signupForm = document.getElementById('signup-form');
     if (signupForm) {
-        signupForm.onsubmit = (e) => {
+        signupForm.onsubmit = async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            const fullName = document.getElementById('fullName')?.value.trim() || "New User";
+            const fullName = document.getElementById('fullName').value.trim();
             const dobValue = document.getElementById('dob').value;
             const btn = signupForm.querySelector('.auth-btn');
             const errorMsg = document.getElementById('signupError');
+            const showError = (message) => {
+                errorMsg.textContent = message;
+                errorMsg.hidden = false;
+            };
 
-            // Age Check
-            const birthDate = new Date(`${dobValue}T00:00:00`);
+            const birthDate = dobValue ? new Date(`${dobValue}T00:00:00`) : null;
             const today = new Date();
-            if (!dobValue || Number.isNaN(birthDate.getTime()) || birthDate > today) {
-                if (errorMsg) {
-                    errorMsg.textContent = "Please enter a valid date of birth.";
-                    errorMsg.hidden = false;
-                } else {
-                    alert("Please enter a valid date of birth.");
-                }
+            if (!fullName) {
+                showError("Enter your name to create an account.");
                 return;
             }
+            if (!birthDate || Number.isNaN(birthDate.getTime()) || birthDate > today) {
+                showError("Please enter a valid date of birth.");
+                return;
+            }
+
             let age = today.getFullYear() - birthDate.getFullYear();
             if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
                 age--;
             }
 
+            if (age < 12) {
+                showError("You must be at least 12 years old to create an account.");
+                return;
+            }
+            const parentalGuidance = age === 12;
 
-                if (age < 12) {
-                    if (errorMsg) {
-                        errorMsg.textContent = "You must be at least 12 years old to create an account.";
-                        errorMsg.hidden = false;
-                    } else {
-                        alert("You must be at least 12 years old to create an account.");
-                    }
-                    return;
-                }
-                let parentalGuidance = false;
-                if (age === 12) {
-                    parentalGuidance = true;
-                }
-
-            if (errorMsg) errorMsg.hidden = true;
-
-            btn.innerText = "Creating Account...";
+            errorMsg.hidden = true;
+            btn.textContent = "Creating account...";
             btn.disabled = true;
+            showAuthLoading("Making your space...", "Getting your Fresh Pages account ready...");
 
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                        return db.collection("Users").doc(userCredential.user.uid).set({
-                            uid: userCredential.user.uid,
-                            email: email,
-                            name: fullName,
-                            age: age,
-                            dob: dobValue,
-                            parentalGuidance: parentalGuidance,
-                            createdAt: new Date().toISOString(),
-                            bio: "New writer on Fresh Pages"
-                        });
-                })
-                .then(() => { window.location.href = "Blog.html"; })
-                .catch((error) => {
-                    if (errorMsg) {
-                        errorMsg.textContent = error.message;
-                        errorMsg.hidden = false;
-                    } else {
-                        alert(error.message);
-                    }
-                    btn.innerText = "Sign Up";
-                    btn.disabled = false;
+            let accountCreated = false;
+            try {
+                let user = auth.currentUser;
+                if (!user || (user.email || "").toLowerCase() !== email.toLowerCase()) {
+                    const credential = await auth.createUserWithEmailAndPassword(email, password);
+                    user = credential.user;
+                    accountCreated = true;
+                }
+
+                await user.updateProfile({ displayName: fullName });
+                await db.collection("Users").doc(user.uid).set({
+                    uid: user.uid,
+                    email: user.email,
+                    name: fullName,
+                    age: age,
+                    dob: dobValue,
+                    parentalGuidance: parentalGuidance,
+                    createdAt: user.metadata.creationTime || new Date().toISOString(),
+                    bio: "New writer on Fresh Pages"
                 });
+                showAuthLoading("You're in!", "Your new story space is ready. Taking you to the stories...");
+                await authTransitionDelay();
+                window.location.href = "Blog.html";
+            } catch (error) {
+                hideAuthLoading();
+                console.error("Account creation or profile setup failed:", error);
+                if (accountCreated || (auth.currentUser && (auth.currentUser.email || "").toLowerCase() === email.toLowerCase())) {
+                    showError("Your account is created, but we couldn't finish setting up your profile. Check your connection and submit again to retry.");
+                } else {
+                    showError(getAuthErrorMessage(error, "create your account"));
+                }
+            } finally {
+                btn.textContent = "Create account";
+                btn.disabled = false;
+            }
         };
     }
 
@@ -177,43 +258,33 @@ if (loginForm) {
 
     loginForm.onsubmit = async (e) => {
         e.preventDefault();
-        console.log("🚀 Login process started");
-
-        // Check Firebase initialization
-        if (typeof firebase === "undefined" || !firebase.apps.length) {
-            console.error("❌ Firebase not initialized");
-            document.getElementById('loginError').textContent = "Login system error. Please try again later.";
-            document.getElementById('loginError').style.display = "block";
-            return;
-        }
 
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value;
         const btn = loginForm.querySelector('.auth-btn');
         const errorMsg = document.getElementById('loginError');
-        if (errorMsg) errorMsg.style.display = "none";
+        errorMsg.style.display = "none";
 
         try {
-            btn.innerText = "Logging in...";
+            btn.textContent = "Logging in...";
             btn.disabled = true;
+            showAuthLoading("Welcome back!", "Finding your place in the story...");
 
-            // Perform Login
             await auth.signInWithEmailAndPassword(email, password);
-            console.log("✅ Firebase Auth Success");
-
-            // INSTEAD OF checkAuthStatus(), we just redirect. 
-            // The onAuthStateChanged listener will handle the rest!
+            showAuthLoading("You're back!", "Your stories are waiting. Taking you there...");
+            await authTransitionDelay();
             window.location.href = "Blog.html";
-
         } catch (error) {
-            console.error("❌ Login Error:", error.message);
+            hideAuthLoading();
+            console.error("Login failed:", error);
             if (errorMsg) {
-                errorMsg.textContent = error.message;
+                errorMsg.textContent = getAuthErrorMessage(error, "log in");
                 errorMsg.style.display = "block";
             } else {
-                alert(error.message);
+                alert(getAuthErrorMessage(error, "log in"));
             }
-            btn.innerText = "Log In";
+        } finally {
+            btn.textContent = "Log in";
             btn.disabled = false;
         }
     };
@@ -330,29 +401,53 @@ if (loginForm) {
     }
 
    // --- 7. AUTH STATE & UI PROTECTION ---
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged(async user => {
         // Select the items we want to hide or show
         const loggedOutItems = document.querySelectorAll(".nav-auth-logged-out");
         const loggedInItems = document.querySelectorAll(".nav-auth-logged-in");
+        const headerUserNames = document.querySelectorAll(".header-user-name");
         const profileGreeting = document.getElementById("profileGreeting");
         const avatarCircle = document.querySelector(".avatar-circle");
 
         if (user) {
             console.log("👤 User Logged In:", user.email);
+            const fallbackName = user.displayName || (user.email ? user.email.split("@")[0] : "Reader");
+            headerUserNames.forEach(el => {
+                el.textContent = `Hey, ${fallbackName} ✨`;
+                el.hidden = false;
+            });
             
             // Show Settings/Logout, Hide Login/Signup
             loggedOutItems.forEach(el => el.style.display = "none");
             loggedInItems.forEach(el => el.style.display = "block");
             // Update sidebar greeting and avatar
             if (profileGreeting) {
-                const name = user.displayName || user.email.split("@")[0];
-                profileGreeting.textContent = `Welcome, ${name}`;
+                profileGreeting.textContent = `Welcome, ${fallbackName}`;
             }
             if (avatarCircle) {
-                avatarCircle.textContent = (user.displayName || user.email)[0].toUpperCase();
+                avatarCircle.textContent = fallbackName[0].toUpperCase();
+            }
+
+            try {
+                const userDoc = await db.collection("Users").doc(user.uid).get();
+                if (auth.currentUser && auth.currentUser.uid === user.uid && userDoc.exists) {
+                    const profile = userDoc.data();
+                    const name = profile.creatorName || profile.name || fallbackName;
+                    headerUserNames.forEach(el => {
+                        el.textContent = `Hey, ${name} ✨`;
+                    });
+                    if (profileGreeting) profileGreeting.textContent = `Welcome, ${name}`;
+                    if (avatarCircle) avatarCircle.textContent = name[0].toUpperCase();
+                }
+            } catch (error) {
+                console.warn("Could not load the profile name for the header:", error);
             }
         } else {
             console.log("🌐 Guest Mode Active");
+            headerUserNames.forEach(el => {
+                el.hidden = true;
+                el.textContent = "";
+            });
             
             // Show Login/Signup, Hide Settings/Logout
             loggedOutItems.forEach(el => el.style.display = "block");

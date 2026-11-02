@@ -58,14 +58,17 @@ if (resumeTitle || resumeContent) {
         localStorage.setItem('draft_title', title);
         localStorage.setItem('draft_content', content);
         if (saveDraftBtn) {
-            saveDraftBtn.innerText = 'Saved locally';
-            setTimeout(() => saveDraftBtn.innerText = 'Save Draft', 1200);
+            saveDraftBtn.innerText = 'Saved on this device';
+            setTimeout(() => saveDraftBtn.innerText = 'Save for later', 1200);
         }
     }, 700);
 
     const titleInput = document.getElementById('postTitle');
     const contentInput = document.getElementById('postContent');
-    if (titleInput) titleInput.addEventListener('input', autoSave);
+    if (titleInput) titleInput.addEventListener('input', () => {
+        autoSave();
+        updateCharCount();
+    });
     if (contentInput) contentInput.addEventListener('input', autoSave);
 
     // Preview / char count
@@ -104,12 +107,17 @@ if (resumeTitle || resumeContent) {
     }
 
     if (previewToggle) {
+        previewToggle.setAttribute('aria-controls', 'livePreview');
+        previewToggle.setAttribute('aria-expanded', 'false');
         previewToggle.addEventListener('click', () => {
             if (!editorArea || !livePreview) return;
-            editorArea.classList.toggle('show-preview');
-            livePreview.classList.toggle('hidden');
+            const isShowingPreview = editorArea.classList.toggle('show-preview');
+            livePreview.classList.toggle('hidden', !isShowingPreview);
+            livePreview.setAttribute('aria-hidden', String(!isShowingPreview));
+            previewToggle.setAttribute('aria-expanded', String(isShowingPreview));
+            previewToggle.textContent = isShowingPreview ? '✏️ Back to writing' : '👀 Preview';
             // Update preview when toggling on
-            if (!livePreview.classList.contains('hidden')) renderPreview(contentInput.value);
+            if (isShowingPreview) renderPreview(contentInput.value);
         });
     }
 
@@ -137,9 +145,9 @@ if (saveDraftBtn) {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            saveDraftBtn.innerText = "Draft Saved! ✅";
+            saveDraftBtn.innerText = "Draft saved! ✅";
             setTimeout(() => {
-                saveDraftBtn.innerText = "Save Draft";
+                saveDraftBtn.innerText = "Save for later";
                 saveDraftBtn.disabled = false;
             }, 2000);
 

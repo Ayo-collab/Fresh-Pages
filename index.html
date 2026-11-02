@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
   </head>
-  <body>
+  <body class="home-page">
     <header class="site-header">
       <div class="container header-row">
         <a class="brand" href="index.html">
@@ -26,43 +26,75 @@
           <a href="login.html" class="nav-auth-logged-out">Login</a>
         </nav>
         <div class="header-actions">
+          <span id="headerUserName" class="header-user-name" hidden></span>
           <button id="themeToggle" class="theme-toggle">Toggle</button>
         </div>
       </div>
     </header>
 
     <main class="content container">
-      <section class="hero">
+      <section class="hero home-hero">
         <div class="hero-inner">
-          <h1>Share your voice. Discover new stories.</h1>
-          <p class="lead">Fresh Pages is a friendly community for writers and readers. Publish articles, find collaborators, and join conversations.</p>
+          <p class="hero-kicker"><span aria-hidden="true">✦</span> YOUR IDEAS. YOUR CORNER OF THE INTERNET.</p>
+          <h1>Your story deserves <span>a main-character moment.</span></h1>
+          <p class="lead">Write what you love, find your people, and discover stories that get you. Fresh Pages is your space to make something yours.</p>
           <div class="hero-ctas">
-            <a class="btn primary" href="Create.html">Write a Story</a>
-            <a class="btn outline" href="Blog.html">Explore</a>
+            <a class="btn primary" href="Create.html">Start writing <span aria-hidden="true">↗</span></a>
+            <a class="btn outline" href="Blog.html">Find your next read</a>
           </div>
+          <p class="hero-note"><span aria-hidden="true">✍️</span> No pressure. Just start with one sentence.</p>
         </div>
-        <div class="hero-illustration" aria-hidden="true"></div>
+        <div class="hero-illustration" aria-hidden="true">
+          <div class="hero-sparkle sparkle-one">✦</div>
+          <div class="hero-sparkle sparkle-two">✳</div>
+          <div class="hero-note-card">
+            <span class="note-card-label">a little reminder</span>
+            <p>Your voice is<br><strong>the whole point.</strong></p>
+            <span class="note-card-doodle">♡</span>
+          </div>
+          <span class="hero-sticker">MAKE<br>SOMETHING</span>
+        </div>
       </section>
 
       <section class="features">
-        <h2>Featured</h2>
+        <div class="home-section-heading">
+          <div>
+            <p class="eyebrow">GOOD THINGS HAPPEN HERE</p>
+            <h2>Pick your next thing</h2>
+          </div>
+          <span class="heading-doodle" aria-hidden="true">✳</span>
+        </div>
         <div class="grid featured-grid">
           <article class="card">
-            <h3>Community Spotlight</h3>
-            <p>Discover stories shared by Fresh Pages writers.</p>
-            <a class="read-more" href="Blog.html">Read more</a>
+            <span class="feature-emoji" aria-hidden="true">📚</span>
+            <p class="feature-label">FOR THE CURIOUS</p>
+            <h3>Find a story to get lost in</h3>
+            <p>Real ideas, different perspectives, and your next “one more chapter” moment.</p>
+            <a class="read-more" href="Blog.html">Explore stories <span aria-hidden="true">↗</span></a>
           </article>
           <article class="card">
-            <h3>Write with Confidence</h3>
-            <p>Drafts, autosave, and collaboration tools.</p>
-            <a class="read-more" href="Create.html">Get started</a>
+            <span class="feature-emoji" aria-hidden="true">🪄</span>
+            <p class="feature-label">FOR THE CREATORS</p>
+            <h3>Turn your “what if” into a story</h3>
+            <p>Start messy, save your drafts, and make something that sounds like you.</p>
+            <a class="read-more" href="Create.html">Make your first page <span aria-hidden="true">↗</span></a>
           </article>
           <article class="card">
-            <h3>Secure Accounts</h3>
-            <p>Fast sign-in and account tools powered by Firebase.</p>
-            <a class="read-more" href="login.html">Sign in</a>
+            <span class="feature-emoji" aria-hidden="true">💬</span>
+            <p class="feature-label">FOR YOUR PEOPLE</p>
+            <h3>Share the things you care about</h3>
+            <p>Put your work out there, meet other readers, and keep the conversation going.</p>
+            <a class="read-more" href="signup.html">Join the community <span aria-hidden="true">↗</span></a>
           </article>
         </div>
+      </section>
+
+      <section class="home-cta">
+        <span class="cta-sparkle" aria-hidden="true">✦</span>
+        <p class="eyebrow">THIS IS YOUR SIGN</p>
+        <h2>You don’t need permission to begin.</h2>
+        <p>Open a blank page. See what happens.</p>
+        <a class="btn primary" href="Create.html">Let’s make something <span aria-hidden="true">↗</span></a>
       </section>
 
     </main>

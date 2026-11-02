@@ -13,11 +13,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!featuredHero) return;
         const body = document.createElement('div');
         body.className = 'hero-body';
+        const kicker = document.createElement('p');
+        kicker.className = 'featured-kicker';
+        kicker.textContent = '✨ THE SPOTLIGHT';
         const heading = document.createElement('h3');
-        heading.textContent = 'Featured stories';
+        heading.textContent = 'Your next favorite story is out there';
         const message = document.createElement('p');
-        message.textContent = 'No featured stories yet. New content will appear here soon.';
-        body.append(heading, message);
+        message.textContent = 'No featured stories yet. Check back soon for something good.';
+        body.append(kicker, heading, message);
         featuredHero.replaceChildren(body);
     }
 
@@ -122,6 +125,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!featured) return;
         const title = document.createElement('h3');
         title.textContent = featured.data.title || 'Featured';
+        const kicker = document.createElement('p');
+        kicker.className = 'featured-kicker';
+        kicker.textContent = '✨ THE SPOTLIGHT';
         const preview = document.createElement('p');
         const content = featured.data.content || '';
         preview.textContent = content ? `${content.substring(0, 160)}...` : '';
@@ -132,11 +138,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const query = new URLSearchParams({ id: featured.id });
         if (featured.data.uid) query.set('uid', featured.data.uid);
         readLink.href = `Story.html?${query.toString()}`;
-        readLink.textContent = 'Read Featured';
+        readLink.textContent = 'Read the story ↗';
         const linkWrapper = document.createElement('div');
         linkWrapper.style.marginTop = '12px';
         linkWrapper.appendChild(readLink);
-        body.append(title, preview, linkWrapper);
+        body.append(kicker, title, preview, linkWrapper);
         const children = [body];
         const imageUrl = safeImageUrl(featured.data.thumbnail);
         if (imageUrl) {

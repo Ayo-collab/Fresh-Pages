@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nameInput = document.getElementById("displayNameInput");
     const saveProfileBtn = document.getElementById("saveProfileBtn");
     const logoutBtn = document.getElementById("logoutButton");
+    const headerUserNames = document.querySelectorAll(".header-user-name");
 
     async function loadUserStories(userId) {
         if (!postsList) return;
@@ -132,13 +133,26 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const fallbackName = user.displayName || (user.email ? user.email.split("@")[0] : "Reader");
+        headerUserNames.forEach((element) => {
+            element.textContent = `Hey, ${fallbackName} ✨`;
+            element.hidden = false;
+        });
+
         try {
             const userDoc = await db.collection("Users").doc(user.uid).get();
-            if (userDoc.exists && nameInput) {
-                nameInput.value = userDoc.data().creatorName || "";
+            if (auth.currentUser && auth.currentUser.uid === user.uid && userDoc.exists) {
+                const profile = userDoc.data();
+                const name = profile.creatorName || profile.name || fallbackName;
+                if (nameInput) nameInput.value = profile.creatorName || profile.name || user.displayName || "";
+                headerUserNames.forEach((element) => {
+                    element.textContent = `Hey, ${name} ✨`;
+                });
+            } else if (nameInput) {
+                nameInput.value = user.displayName || "";
             }
         } catch (e) {
-            console.error("Profile load failed", e);
+            console.error("Profile load failed:", e);
         }
 
         loadUserStories(user.uid);
@@ -161,7 +175,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 await db.collection("Users").doc(currentUser.uid).set({ creatorName: val }, { merge: true });
-                alert("Profile Saved!");
+                headerUserNames.forEach((element) => {
+                    element.textContent = `Hey, ${val} ✨`;
+                });
+                saveProfileBtn.textContent = "Saved! ✨";
+                window.setTimeout(() => {
+                    saveProfileBtn.textContent = "Save my name ✨";
+                }, 1800);
             } catch (e) {
                 console.error(e);
                 alert("Error saving profile.");

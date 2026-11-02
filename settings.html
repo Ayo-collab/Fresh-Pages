@@ -21,6 +21,7 @@
                     <a href="Create.html">Create</a>
                 </nav>
                 <div class="header-actions">
+                    <span id="headerUserName" class="header-user-name" hidden></span>
                     <button id="themeToggle" class="theme-toggle">Toggle</button>
                 </div>
             </div>
@@ -30,29 +31,39 @@
             <div class="container settings-page">
                 <div class="settings-header-row">
                     <div>
-                        <p class="eyebrow">Account</p>
-                        <h2 class="section-title">Your Settings</h2>
+                        <p class="eyebrow">YOUR SPACE, YOUR RULES</p>
+                        <h2 class="section-title">Make Fresh Pages feel like you</h2>
+                        <p class="settings-intro">Pick your vibe, look after your stories, and make yourself at home.</p>
                     </div>
+                    <span class="settings-sticker" aria-hidden="true">little<br>things ✦<br>big vibe</span>
                 </div>
 
                 <div class="settings-grid">
                     <section class="settings-card">
                         <div class="card-header-row">
-                            <h3>Profile</h3>
-                            <span class="status-pill">Active</span>
+                            <div class="settings-card-title">
+                                <span class="settings-icon" aria-hidden="true">🪪</span>
+                                <h3>Your profile</h3>
+                            </div>
+                            <span class="status-pill">That's you</span>
                         </div>
+                        <p class="settings-card-copy">Choose the name people see next to your stories.</p>
                         <div class="form-group">
-                            <label for="displayNameInput">Creator Name</label>
-                            <input type="text" id="displayNameInput" placeholder="Loading name...">
+                            <label for="displayNameInput">Your creator name</label>
+                            <input type="text" id="displayNameInput" placeholder="Loading your name..." maxlength="100">
                         </div>
-                        <button class="read-more-btn" id="saveProfileBtn">Update Name</button>
+                        <button class="read-more-btn" id="saveProfileBtn">Save my name ✨</button>
                     </section>
 
                     <section class="settings-card settings-card-wide">
                         <div class="card-header-row">
-                            <h3>Your Drafts</h3>
-                            <span class="status-pill muted">Saved</span>
+                            <div class="settings-card-title">
+                                <span class="settings-icon" aria-hidden="true">📝</span>
+                                <h3>Your drafts</h3>
+                            </div>
+                            <span class="status-pill muted">WIP zone</span>
                         </div>
+                        <p class="settings-card-copy">Ideas in progress belong here. Pick one back up whenever you're ready.</p>
                         <div id="draftsList" class="scroll-list">
                             <p class="modal-hint">Checking for drafts...</p>
                         </div>
@@ -60,9 +71,13 @@
 
                     <section class="settings-card settings-card-wide">
                         <div class="card-header-row">
-                            <h3>Manage My Stories</h3>
-                            <span class="status-pill">Published</span>
+                            <div class="settings-card-title">
+                                <span class="settings-icon" aria-hidden="true">🚀</span>
+                                <h3>Your published stories</h3>
+                            </div>
+                            <span class="status-pill">Out in the world</span>
                         </div>
+                        <p class="settings-card-copy">Check in on what you've shared and see how readers are reacting.</p>
                         <div id="userPostsList" class="manage-stories-grid">
                             <p class="modal-hint">Loading your stories...</p>
                         </div>
@@ -70,14 +85,18 @@
 
                     <section class="settings-card">
                         <div class="card-header-row">
-                            <h3>Appearance</h3>
-                            <span class="status-pill muted">Theme</span>
+                            <div class="settings-card-title">
+                                <span class="settings-icon" aria-hidden="true">🎨</span>
+                                <h3>Set the vibe</h3>
+                            </div>
+                            <span class="status-pill muted">Your look</span>
                         </div>
+                        <p class="settings-card-copy">Make your reading space look and feel right for you.</p>
                         <button id="settingsThemeToggle" class="read-more-btn outline-btn theme-toggle">
-                            Toggle Light Mode
+                            Switch color mode
                         </button>
                         <div class="form-group">
-                            <label for="fontSizeSelect">Font Size</label>
+                            <label for="fontSizeSelect">Text size</label>
                             <select id="fontSizeSelect">
                                 <option value="small">Small</option>
                                 <option value="medium" selected>Medium</option>
@@ -86,7 +105,7 @@
                             <p class="settings-hint">Applies across the site and is saved on this device.</p>
                         </div>
                         <div class="form-group">
-                            <label for="fontFamilySelect">Font Style</label>
+                            <label for="fontFamilySelect">Font vibe</label>
                             <select id="fontFamilySelect">
                                 <option value="inter">Inter — Clean</option>
                                 <option value="arial">Arial — Simple</option>
@@ -102,11 +121,14 @@
 
                     <section class="settings-card">
                         <div class="card-header-row">
-                            <h3>Account</h3>
-                            <span class="status-pill danger">Secure</span>
+                            <div class="settings-card-title">
+                                <span class="settings-icon" aria-hidden="true">👋</span>
+                                <h3>Taking a break?</h3>
+                            </div>
+                            <span class="status-pill danger">No worries</span>
                         </div>
-                        <p class="settings-hint">Sign out of your session securely.</p>
-                        <button id="logoutButton" class="logout-btn">Log Out</button>
+                        <p class="settings-hint">You can log out now and come back to your stories anytime.</p>
+                        <button id="logoutButton" class="logout-btn">Log out</button>
                     </section>
                 </div>
             </div>
